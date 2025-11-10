@@ -32,15 +32,31 @@ func (s *Service) GetSubtree(ctx context.Context, id int) ([]model.Comment, erro
 
 // DeleteSubtree удаляет коментарий и все вложенные
 func (s *Service) DeleteSubtree(ctx context.Context, id int) error {
-
+	err := s.storage.DeleteSubtree(ctx, id)
+	if err != nil {
+		return fmt.Errorf("[service] error of deleting subtree: %w", err)
+	}
+	return nil
 }
 
 // SearchComments ищет коментарии по ключевым словам
 func (s *Service) SearchComments(ctx context.Context, queryText string, limit, offset int) ([]model.Comment, error) {
-
+	queryText = strings.TrimSpace(queryText)
+	if queryText == "" {
+		return nil, fmt.Errorf("[service] serach query can't be empty")
+	}
+	results, err := s.storage.SearchComments(ctx, queryText, limit, offset)
+	if err != nil {
+		return nil, fmt.Errorf("[service] error serching comments: %w", err)
+	}
+	return results, nil
 }
 
 // ListRootComments возвращает корневые коментарии
 func (s *Service) ListRootComments(ctx context.Context, limit, offset int) ([]model.Comment, error) {
-
+	comments, err := s.storage.ListRootComments(ctx, limit, offset)
+	if err != nil {
+		return nil, fmt.Errorf("[service] error listing root comments: %w", err)
+	}
+	return comments, nil
 }
