@@ -4,7 +4,7 @@ import (
 	"comment_tree/internal/model"
 	"context"
 
-	"github.com/!vladimirmoscow84/wbf/ginext"
+	"github.com/gin-gonic/gin"
 	"github.com/wb-go/wbf/ginext"
 )
 
@@ -27,4 +27,21 @@ type Router struct {
 	commentCreator commentCreator
 	commentGetter  commentGetter
 	commentDeleter commentDeleter
+}
+
+func New(router *ginext.Engine, creator commentCreator, getter commentGetter, deleter commentDeleter) *Router {
+	return &Router{
+		Router:         router,
+		commentCreator: creator,
+		commentGetter:  getter,
+		commentDeleter: deleter,
+	}
+}
+
+func (r *Router) Routes() {
+	r.Router.POST("/comments", r.CreateCommentHandler)
+	r.Router.GET("/comments", r.GetCommentHandler)
+	r.Router.DELETE("/comments/:id", r.DeleteCommentHandler)
+	r.Router.GET("/", func(c *gin.Context) { c.File("./web/index.html") })
+	r.Router.Static("/static", "./web")
 }
