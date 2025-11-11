@@ -37,7 +37,7 @@ func Run() {
 	if err != nil {
 		log.Fatalf("[app] failed to init unified storage: %v", err)
 	}
-	log.Println("[app] Unified storage initialized successfully")
+	log.Println("[app]storage initialized successfully")
 
 	serviceLayer := service.New(store)
 
