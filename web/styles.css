@@ -1,0 +1,62 @@
+:root{
+  --bg:#fafafa;
+  --card:#fff;
+  --muted:#666;
+  --accent:#2b6cb0;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Inter, Roboto, "Segoe UI", Arial, sans-serif;
+  background:var(--bg);
+  color:#111;
+  padding:20px;
+}
+.container{ max-width:900px; margin:0 auto; }
+
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+}
+header h1{ margin:0; font-size:20px; }
+.controls{ display:flex; gap:8px; align-items:center; }
+
+.controls input{ padding:8px; min-width:260px; border-radius:6px; border:1px solid #ddd; }
+.controls button{ padding:8px 12px; border-radius:6px; border:0; background:var(--accent); color:#fff; cursor:pointer; }
+.controls select{ padding:6px; border-radius:6px; }
+
+main{ display:grid; gap:18px; }
+.composer{ background:var(--card); padding:12px; border-radius:8px; border:1px solid #eee; }
+.composer textarea{ width:100%; min-height:80px; padding:8px; border-radius:6px; border:1px solid #ddd; resize:vertical; }
+.composer-actions{ margin-top:8px; display:flex; gap:8px; justify-content:flex-end; }
+
+.tree-section{ background:var(--card); padding:12px; border-radius:8px; border:1px solid #eee; }
+.tree{ margin-top:8px; }
+
+.comment{
+  padding:8px;
+  border-radius:6px;
+  background:#fff;
+  border:1px solid #f0f0f0;
+  margin:6px 0;
+  position:relative;
+}
+.comment .meta{ font-size:12px; color:var(--muted); display:flex; gap:8px; align-items:center; }
+.comment .content{ margin-top:6px; white-space:pre-wrap; }
+.comment .actions{ margin-top:8px; display:flex; gap:8px; }
+.comment .btn{ padding:6px 8px; border-radius:6px; border:0; cursor:pointer; font-size:13px; }
+.btn-reply{ background:#edf2f7; color:#333 }
+.btn-delete{ background:#ffe5e5; color:#a00 }
+.btn-expand{ background:#eef9ff; color:var(--accent) }
+
+.indent{ margin-left:20px; }
+
+.small{ font-size:13px; color:var(--muted) }
+
+.pagination{ display:flex; gap:12px; align-items:center; justify-content:center; margin:8px 0; }
+.pagination button{ padding:6px 10px; border-radius:6px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+footer{ margin-top:18px; text-align:center; color:var(--muted) }
