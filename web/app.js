@@ -21,7 +21,7 @@ let page = 1;
 const perPage = 10;
 let totalLastFetched = 0;
 
-// cache for expanded subtrees: id -> array of comments
+
 const subtreeCache = new Map();
 
 function apiGet(url){
@@ -50,7 +50,7 @@ function apiDelete(url){
 }
 
 function renderTree(flatList){
-  // Build id->node map and children
+ 
   const map = new Map();
   flatList.forEach(c => { c.children = []; map.set(c.id, c); });
   const roots = [];
@@ -86,7 +86,7 @@ function renderNode(node, depth, container){
   const actions = document.createElement('div');
   actions.className = 'actions';
 
-  // expand / collapse if has children (we don't always know - show expand always)
+ 
   const expandBtn = document.createElement('button');
   expandBtn.className = 'btn btn-expand';
   expandBtn.textContent = 'Развернуть';
@@ -117,7 +117,7 @@ function renderNode(node, depth, container){
 
   container.appendChild(wrap);
 
-  // If we have cached children, render them now (collapsed initially)
+ 
   if(subtreeCache.has(node.id)){
     const children = subtreeCache.get(node.id);
     if(children && children.length){
@@ -130,20 +130,19 @@ function renderNode(node, depth, container){
 }
 
 async function onToggleChildren(node, el, depth){
-  // If cached -> remove cache and re-render (toggle off)
+
   if(subtreeCache.has(node.id)){
     subtreeCache.delete(node.id);
-    refresh(); // simple approach: re-fetch roots or current listing
+    refresh(); 
     return;
   }
 
-  // else fetch subtree
+  
   try {
     const list = await apiGet(`/comments?parent=${encodeURIComponent(node.id)}`);
-    // remove the root element itself from subtree if returned (the CTE returns the root too)
     const children = list.filter(c => c.id !== node.id);
     subtreeCache.set(node.id, children);
-    refresh(); // re-render
+    refresh(); 
   } catch (err) {
     alert('Ошибка загрузки ветки: ' + err.message);
   }
@@ -176,7 +175,6 @@ async function onSearch(){
     return;
   }
   const list = await apiGet(`/comments?search=${encodeURIComponent(q)}&limit=100&offset=0`);
-  // Search returns matching comments (not the tree). We can show them as flat list.
   treeEl.innerHTML = '';
   list.forEach(c => {
     const div = document.createElement('div');
@@ -188,7 +186,6 @@ async function onSearch(){
     treeEl.appendChild(div);
   });
 
-  // attach handlers for reply/delete (event delegation would be nicer)
   treeEl.querySelectorAll('.btn-reply').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const id = Number(e.currentTarget.dataset.id);
@@ -211,10 +208,7 @@ function escapeHtml(s){
 }
 
 async function refresh(){
-  // Default view: list root comments and render them
   const list = await loadRoots();
-  // For each root, if we have subtree cached for that root id, we want to merge the subtree (root + its children)
-  // But our API returns only roots here, so we render roots; expand will fetch subtree separately.
   renderTree(list);
   updatePagination();
 }
@@ -250,5 +244,5 @@ postRootBtn.addEventListener('click', async ()=>{
   }
 });
 
-// initial load
+
 refresh();
